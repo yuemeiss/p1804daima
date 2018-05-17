@@ -1,0 +1,12 @@
+t = ("张三",22,"未婚","有钱","likedog","Ture",'sb')
+print(t[3])
+print(t[5])
+print(t[6])
+print(len(t))
+print(t.index(22))
+print(t.count("Ture"))
+print(type(t))
+print(t)
+print("姓名: %s, \n年龄: %d, \n为什么: %s, \n爱好: %s, \n性别: %s, \n性格: %s, \n相貌: %s " % t )
+for a in t:
+    print(a)

@@ -1,0 +1,16 @@
+总用量 24
+-rw-rw-r-- 1 dzb dzb 8365 4月  27 11:09 12.txt
+-rw-rw-r-- 1 dzb dzb  261 4月  27 11:20 2.exe
+lrwxrwxrwx 1 dzb dzb    5 4月  27 11:22 33.exe -> 2.exe
+-rw-rw-r-- 1 dzb dzb    0 4月  27 11:30 aa.txt
+drwxrwxr-x 6 dzb dzb 4096 4月  27 10:08 laowang
+drwxrwxr-x 4 dzb dzb 4096 4月  27 10:22 load
+总用量 36K
+drwxrwxr-x 4 dzb dzb 4.0K 4月  27 11:30 .
+drwxrwxr-x 4 dzb dzb 4.0K 4月  27 09:22 ..
+-rw-rw-r-- 1 dzb dzb 8.2K 4月  27 11:09 12.txt
+-rw-rw-r-- 1 dzb dzb  261 4月  27 11:20 2.exe
+lrwxrwxrwx 1 dzb dzb    5 4月  27 11:22 33.exe -> 2.exe
+-rw-rw-r-- 1 dzb dzb  308 4月  27 11:30 aa.txt
+drwxrwxr-x 6 dzb dzb 4.0K 4月  27 10:08 laowang
+drwxrwxr-x 4 dzb dzb 4.0K 4月  27 10:22 load
