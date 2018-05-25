@@ -68,40 +68,23 @@ def vipsocre():
     return j
 
 #定义一个验证支付密码函数
-import 客房管理,pay
+import 客房管理
 def mimayz():
-    user=客房管理.search()
+    v=客房管理.search(0.8)
     phone = input("请输入电话:")
     puser = int(input("请输入密码"))
     for vip in vipcard:
         if puser == vip["支付密码"] and phone == vip["电话"]:
             a=vip["余额"]
+            s=vip["积分"]
             print("显示余额: %.2f"% a)
-            time = int(input("输入客人住了多长时间:"))
-            if user == "201" or user == '301' or user == '401' :
-                i=a-pay.zhifu1(time,0.8)
-                vip["余额"]=i
-                print("显示余额: %.2f"% i)
-            elif user == '202' or user == '302' or user== '402':
-                i=a-pay.zhifu3(time,0.8)
-                vip["余额"]=i
-                print("显示余额: %.2f"% i)
-            elif user == '203' or user == '303' or user == '403':
-                i=a-pay.zhifu2(time,0.8)
-                vip["余额"]=i
-                print("显示余额: %.2f"% i)
-            elif user == "204" or user == '304' or user == '404':
-                i=a-pay.zhifu4(time,0.8)
-                vip["余额"]=i
-                print("显示余额: %.2f"% i)
-            elif user == '501' or user == '502':
-                i=a-pay.zhifu5(time,0.8)
-                vip["余额"]=i
-                print("显示余额: %.2f"% i)
-            else:
-                print("输入有误，请重新输入")
+            i=a-v
+            j=a+v
+            print("尊敬的vip您的余额为: %.2f"% i)
+            print("尊敬的vip您的积分为: %d "% j)
+            vip["余额"]=i
+            vip["积分"]=j
 
-            return a
         else:
             print("电话或密码有误，请重新输入")
     return "no"

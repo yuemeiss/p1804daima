@@ -57,29 +57,12 @@ def vipfuwu():
             break
         else:
             print("输入有误，请重新输入")
-import pay
 def shouyin():
     print("*"*50)
     print("+++++前台收银+++++")
+    print("输入q返回系统菜单")
     while True:
-        user = 客房管理.search()
-        if user == "0":
-            print("返回上级菜单")
-            break
-        time = int(input("输入客人住了多长时间:"))
-        if user == "201" or user == '301' or user == '401' :
-            h=pay.zhifu1(time,1)
-        elif user == '202' or user == '302' or user== '402':
-            h=pay.zhifu1(time,1)
-        elif user == '203' or user == '303' or user == '403':
-            h=pay.zhifu1(time,1)
-        elif user == "204" or user == '304' or user == '404':
-            h=pay.zhifu1(time,1)
-        elif user == '501' or user == '502':
-            h=pay.zhifu1(time,1)
-        else:
-            print("输入有误，请重新输入")
-    return h
+        客房管理.jiezhang(1)
 
 
 
@@ -90,7 +73,7 @@ while True:
     systemMenu()
     suSer=input("选择相应功能输入数字:")
     if suSer == "0":
-        a=shouyin()
+        shouyin()
     elif suSer == "1":
         roomG()
     elif suSer == "2":
