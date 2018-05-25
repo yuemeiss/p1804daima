@@ -29,8 +29,8 @@ def showAll():
     '''显示全部'''
     print("#"*35)
     print("　　　显示所有名片")
-    for cardDic in card_list:
-        print("姓名: %s "% cardDic["姓名"])
+    for index,cardDic in enumerate(card_list):
+        print("姓名: %s "% index,cardDic["姓名"])
     print(">"*35)
 def search():
     print("<"*35)
@@ -39,8 +39,10 @@ def search():
     for i in card_list:
         if usEr == i["姓名"]:
             print("公司名称: %s\n姓名: %s(%s)\n电话: %s\n邮箱: %s" % (i["公司名称"],i["姓名"],i["职位"],i["电话"],i["邮箱"]))
-        else:
-            print("没有您查询的姓名，请重新选择输入")
+            print("所在位置: %d "% card_list.index(i))
+            break
+    else:
+        print("输入有误，请重新输入")
     print("="*35)
 #删除名片
 def delete():
@@ -49,44 +51,44 @@ def delete():
     usEr=input("请输入要删除的姓名:")
     for cardDic in card_list:
         if usEr == cardDic["姓名"]:
-            print("删除 %s 名片成功"% cardDic["姓名"])
             card_list.remove(cardDic)
-        else:
-            print("没有此名片，请重新选择输入")
+            print("删除 %s 名片成功"% cardDic["姓名"])
+            break
+    else:
+        print("输入有误，请重新输入")
     print("="*35)
 #修改名片
 def alter():
     print("*"*35)
-    user=input("请输入需要修改的名片:")
+    search()
+    user=input("请输入需要修改名片的电话:")
     for cardDic in card_list:
-        if user == cardDic["姓名"]:
+        if user == cardDic["电话"] :
+            print("公司名称: %s\n姓名: %s(%s)\n电话: %s\n邮箱: %s" % (cardDic["公司名称"],cardDic["姓名"],cardDic["职位"],cardDic["电话"],cardDic["邮箱"]))
             print(cardDic)
             while True:
                 userxk=input("请输入需要的key,修改成功请输q:")
                 if userxk =="q":
                     break
-                userxv=input("请输入需要修改的信息:")
+                userxv=input("请输入需要增改的信息:")
                 cardDic[userxk]=userxv
-                print(cardDic)
+                print("公司名称: %s\n姓名: %s(%s)\n电话: %s\n邮箱: %s" % (cardDic["公司名称"],cardDic["姓名"],cardDic["职位"],cardDic["电话"],cardDic["邮箱"]))
                 print("名片修改成功")
-        else:
-            print("输入有误请重新输入")
+
     print("="*35)
 
-faceMenu()
 while True:
+    faceMenu()
     user=input("请输入数字:")
     if user =="1":
         newCard()
-        continue
     elif user == "2":
         showAll()
-        continue
     elif user =="3":
         search()
-        continue
     elif user == "4":
         delete()
+        print(card_list)
         continue
     elif user == "5":
         alter()
@@ -96,8 +98,6 @@ while True:
         break
     else:
         print("输入有误请重新输入")
-
-
 
 
 
