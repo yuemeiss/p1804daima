@@ -28,7 +28,7 @@ print(cc)
 def sushu(s,m):
     for i in range(s,m):
         k=0
-        for h in range(2,i+1):
+        for h in range(2,i):
             if i%h==0:
                 k=1
                 break

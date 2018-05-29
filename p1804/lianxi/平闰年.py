@@ -40,4 +40,7 @@ def jisuanday(year,month,day):
         p=month1(month,b)
         print("%d/%d/%d 是这一年的第　%d  天"% (year,month,day,p+day))
 
-jisuanday(2018,5,20) #调用函数，输入数值
+year=int(input("请输入年:"))
+month=int(input("输入的月:"))
+day=int(input("请输入日:"))
+jisuanday(year,month,day) #调用函数，输入数值
