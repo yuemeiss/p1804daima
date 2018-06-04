@@ -1,12 +1,7 @@
-"""
-a=1
-while a<51:
-    print("  *"*a)
-    a=a+1
-    print(" *"*a)
-"""
-a=1
-b=1
-while c <= 82:
-    a*b=a*b
-    print()
+a = 1
+s = 50
+for i in range(1,51):
+
+    print(" " * s," ?" * i)
+
+    s-=1
