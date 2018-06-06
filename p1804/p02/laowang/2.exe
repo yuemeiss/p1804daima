@@ -1,6 +1,0 @@
-总用量 20
-lrwxrwxrwx 1 dzb dzb    6 4月  27 11:10 11.txt -> 01.txt
--rw-rw-r-- 1 dzb dzb 8365 4月  27 11:09 12.txt
--rw-rw-r-- 1 dzb dzb    0 4月  27 11:20 2.exe
-drwxrwxr-x 6 dzb dzb 4096 4月  27 10:08 laowang
-drwxrwxr-x 4 dzb dzb 4096 4月  27 10:22 load
