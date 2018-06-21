@@ -1,6 +1,6 @@
 #/usr/bin/env python
 # coding=utf-8
-import pygame
+import pygame,random
 #定义英雄飞机
 class HeroPlane(object):
     def __init__(self,screen,img_path):
@@ -13,11 +13,11 @@ class HeroPlane(object):
         self.screen.blit(self.player,self.rect)  #设置飞机　显示
         # 显示子弹
         for i in self.bullet_list:
-            i.display()  #子弹的对象.display()
-            i.bu_move()
+            i.display('1')  #子弹的对象.display()
+            i.bu_move('1')
 
     def fire(self):
-        self.bullet_list.append(Bullet(self.screen,'./images/bullet.png',self.rect.x,self.rect.y))
+        self.bullet_list.append(Bullet(self.screen,'./images/bullet1.png',self.rect.x,self.rect.y))
 #定义子弹类
 class Bullet(object):
     def __init__(self,screen,img_path,x,y):
@@ -25,28 +25,66 @@ class Bullet(object):
         self.x = x
         self.y = y
         self.bullet = pygame.image.load(img_path)
-    def display(self):
-        self.screen.blit(self.bullet,(self.x,self.y))
-        self.screen.blit(self.bullet,(self.x+80,self.y))
-        self.screen.blit(self.bullet,(self.x+40,self.y))
-    def bu_move(self):
-        self.y -= 2
-
+    def display(self,who):
+        if who == '1':
+            self.screen.blit(self.bullet,(self.x,self.y))
+            self.screen.blit(self.bullet,(self.x+80,self.y))
+            self.screen.blit(self.bullet,(self.x+40,self.y))
+        elif who == '2':
+            self.screen.blit(self.bullet,(self.x,self.y))
+    def bu_move(self,who):
+        if who == '1':
+            self.y -= 5
+        elif who == '2':
+            self.y += 5
+#定义敌机类
 class EnemyPlane(object):
-    def __init__(self,screen,img_path):
+    djx = random.randint(0,40)
+    djy = random.randint(0,40)
+    def __init__(self,screen,img_path,x=0,y=0):
         self.screen = screen
+        self.x = x
+        self.y = y
         self.enemyer = pygame.image.load(img_path)
-        self.en_rect = pygame.Rect('')
+        self.en_rect = pygame.Rect(self.x,self.y,51,39)
+        self.xbullet_list=[]
+    def display(self):
+        self.screen.blit(self.enemyer,self.en_rect)  #设置飞机　显示
+        #self.screen.blit(self.enemyer,(self.en_rect.x-EnemyPlane.djx,self.en_rect.y-EnemyPlane.djy))  #设置飞机　显示
+        # 显示子弹
+        for i in self.xbullet_list:
+            i.display('2')  #子弹的对象.display()
+            i.bu_move('2')
+
+    def fire(self):
+        self.xbullet_list.append(Bullet(self.screen,'./images/bullet.png',self.en_rect.x+21,self.en_rect.y+21))
+        #self.xbullet_list.append(Bullet(self.screen,'./images/bullet.png',self.en_rect.x+EnemyPlane.djx,self.en_rect.y+EnemyPlane.djy))
+    def en_move(self):
+        ss = random.randint(1,100)
+        self.en_rect.x += 2
+        if self.en_rect.x == 2:
+            self.fire()
+        if self.en_rect.x == 400:
+            self.en_rect.x = 0
+            self.fire()
+        self.en_rect.y += 2
+        if self.en_rect.y == 2:
+            self.fire()
+        if self.en_rect.y == 600:
+            self.en_rect.y = 0
+            self.fire()
+        if ss == 50:
+            self.fire()
 
 def key_control(hero,move_step):
+    keys_pressed = pygame.key.get_pressed()
     for event in pygame.event.get():
-        print('event.type = ', event.type)
-        print('event = ', event)
         if event.type == pygame.QUIT:  #退出游戏
             print('退出游戏')
             pygame.quit()
             exit()  #退出程序
-    keys_pressed = pygame.key.get_pressed()
+        elif keys_pressed[pygame.K_SPACE]:
+            hero.fire()
     if keys_pressed[pygame.K_UP] or keys_pressed[pygame.K_w]:
         hero.rect.y -= move_step
         if hero.rect.y <= 0:
@@ -63,48 +101,48 @@ def key_control(hero,move_step):
         hero.rect.x += move_step
         if hero.rect.x >=420:
             hero.rect.x = 420
-    if keys_pressed[pygame.K_SPACE]:
-        hero.fire()
 
 
 
 
 
 def main():
+    CREATE_ENEMY_EVENT = pygame.USEREVENT
+    pygame.time.set_timer(CREATE_ENEMY_EVENT, 1000)
     #创建游戏窗口
     screen =pygame.display.set_mode((480,852),0,32)
     background = pygame.image.load('./images/background.png')
-    #把本地文件夹的图片，获取到代码中
+
+    #创建英雄机
     hero = HeroPlane(screen,'./images/hero1.png')
+    #把本地文件夹的图片，获取到代码中
     #player = pygame.image.load('./images/hero1.png')
     # 定义好的位置和尺寸
     #rect = pygame.Rect(190,728,100,124)
     #clock = pygame.time.Clock()  #获得游戏时钟　控制器
+    djx = random.randint(0,380)
+    djy = random.randint(0,40)
+    for i in range(1,4):
+        enemy = EnemyPlane(screen,'./images/enemy-1.gif')
+        enem1 = EnemyPlane(screen,'./images/enemy-1.gif',djx,djy)
+        enem2 = EnemyPlane(screen,'./images/enemy-1.gif',djy,djx)
+
 
     move_step = 20  #移动的步长值
     while True:
         #把图片加载　到游戏　窗口　上
         screen.blit(background,(0,0))
         #screen.blit(player,rect)
+        #调用英雄机显示方法
         hero.display()
-        """
-        # 移动
-        rect.x += 1
-        if rect.x > 380 :
-            rect.x = 0
-        rect.y -=1
-        if rect.y == 0:
-            rect.y = 728:
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                hero.rect.y -= move_step
-            elif event.key == pygame.K_DOWN:
-                hero.rect.y += move_step
-            elif event.key == pygame.K_LEFT:
-                hero.rect.x -= move_step
-            elif event.key == pygame.K_RIGHT:
-                hero.rect.x += move_step
-        """
+        enemy.display()
+        enemy.en_move()
+        enem1.display()
+        enem1.en_move()
+        enem2.display()
+        enem2.en_move()
+
+
         key_control(hero,move_step)
 
 

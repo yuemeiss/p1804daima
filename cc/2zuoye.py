@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
-import pygame
+import pygame,time
 screen = pygame.display.set_mode((250,250),0,32)
 background = pygame.Surface(screen.get_size())
 background.fill((255,255,255))
@@ -15,11 +15,11 @@ class Cartoon(object):
         return self.screen.blit(self.tupian,self.photo)
 def get_photo():
     for s in range(1,12):
-        tupian = pygame.image.load('./2/%d.jpg'% s)
+        tupian = pygame.image.load('./2197/%d.gif'% s)
         move = Cartoon(screen,tupian)
         move.display()
         pygame.display.update()
-        clock.tick(2)
+        time.sleep(1)
 while True:
         get_photo()
 
