@@ -52,10 +52,24 @@ class Bullet(object):
             return True
         else:
             return False
+#定义爆炸效果
+class Blast(object):
+    def __init__(self,screen,im_path,x,y):
+        self.screen = screen
+        self.bl_result = pygame.image.load(im_path)
+        self.x = x
+        self.y = y
+    def display(self,who):
+        if who == '1':
+            self.screen.blit(self.bullet,(self.x,self.y))
+            self.screen.blit(self.bullet,(self.x+80,self.y))
+            self.screen.blit(self.bullet,(self.x+40,self.y))
+        elif who == '2':
+            self.screen.blit(self.bullet,(self.x,self.y))
+    
+
 #定义敌机类
 class EnemyPlane(object):
-    djx = random.randint(0,40)
-    djy = random.randint(0,40)
     def __init__(self,screen,img_path,x=0,y=0):
         self.screen = screen
         self.x = x
@@ -67,7 +81,6 @@ class EnemyPlane(object):
     def display(self):
         self.screen.blit(self.enemyer,self.en_rect)  #设置飞机　显示
         self.move1()
-        #self.screen.blit(self.enemyer,(self.en_rect.x-EnemyPlane.djx,self.en_rect.y-EnemyPlane.djy))  #设置飞机　显示
         # 显示子弹
         for i in self.xbullet_list:
             if i.dizi():
@@ -121,6 +134,8 @@ def key_control(hero,move_step):
             exit()  #退出程序
         elif keys_pressed[pygame.K_SPACE]:
             hero.fire()
+        elif keys_pressed[pygame.K_b]:
+
     if keys_pressed[pygame.K_UP] or keys_pressed[pygame.K_w]:
         hero.rect.y -= move_step
         if hero.rect.y <= 0:
