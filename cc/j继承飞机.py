@@ -11,7 +11,7 @@ class Plane(object):
         self.bullet_list = []
         self.blast = []
         self.x = 0
-        self.num = 0 
+        self.num = 0
         self.hit = False
     def display(self):
         if self.x == 0:
@@ -49,7 +49,7 @@ class EnemyPlane(Plane):
             s.display1()
             self.x =1
             self.blast.remove(s)
-            clock.tick(4)
+            clock.tick(20)
         self.move1()
     def fire(self):
         self.bullet_list.append(EnemyBullet(self.screen,'./images/bullet.png',self.rect.x+21,self.rect.y+21))
@@ -96,7 +96,7 @@ class HeroBullet(Bullet):
         self.screen.blit(self.bullet,(self.x,self.y))
         self.screen.blit(self.bullet,(self.x+80,self.y))
         self.screen.blit(self.bullet,(self.x+40,self.y))
-#定义敌机子弹    
+#定义敌机子弹
 class EnemyBullet(Bullet):
     def move(self):
         self.b_rect.y += 8
@@ -164,7 +164,7 @@ def main():
         #enem2.display()
         #hero.display()
         #调用监听函数
-        key_control(enemy,hero,move_step)  
+        key_control(enemy,hero,move_step)
         #刷新显示
         pygame.display.update()
         clock.tick(60)  # 让游戏时钟，１/６０秒运行一次

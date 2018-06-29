@@ -1,2 +1,2 @@
-from j继承飞机 import *
-main()
+import j继承飞机
+print(dir(j继承飞机))
