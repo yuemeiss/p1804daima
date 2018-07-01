@@ -21,6 +21,7 @@ class Plane(object):
         self.hp = 100  #飞机血量
         self.su_list = [] #补给列表
         self.su_hit = False #补给控制
+        self.seed = random.randint(1,3)  #敌机速度
     def display(self):
         if self.hp <= 0:
             self.screen.blit(self.blast[self.img_index],self.rect)
@@ -31,6 +32,9 @@ class Plane(object):
             if self.img_index > 3:
                 #self.img_index = 0
                 #self.hit = False
+                boom_sound = pygame.mixer.Sound("./images/gameOver.wav")
+                boom_sound.play()
+                pygame.mixer.music.stop()
                 print('少侠还需继续努力')
                 print('GAME OVER')
                 clock.tick(60)  # 让游戏时钟，１/６０秒运行一次
@@ -58,11 +62,13 @@ class Plane(object):
                     self.su_list.remove(y)
                 y.display()
                 y.move()
+                break
 
     def baozha(self):
         self.blast.append(pygame.image.load('./images/hero_blowup_n1.png'))
         self.blast.append(pygame.image.load('./images/hero_blowup_n2.png'))
         self.blast.append(pygame.image.load('./images/hero_blowup_n3.png'))
+        self.blast.append(pygame.image.load('./images/hero_blowup_n4.png'))
         self.blast.append(pygame.image.load('./images/hero_blowup_n4.png'))
     def swith(self):
         self.hit = True
@@ -78,6 +84,8 @@ class HeroPlane(Plane):
             self.bullet_list.append(HeroBullet(self.screen,'./photo/particle/wsparticle_27.png',self.rect.x-10,self.rect.y))
     def supply(self):
         self.su_list.append(Herosupply(self.screen,'./images/bomb-1.gif',random.randint(0,400),0))
+    def supply1(self):
+        self.su_list.append(Herosupply(self.screen,'./images/bomb-2.gif',random.randint(0,400),0))
     def b_swith(self):
         self.su_hit = True
 #定义敌机类
@@ -115,10 +123,11 @@ class EnemyPlane(Plane):
     def move1(self):
         '''敌机的移动'''
         if self.flag == 'right':
-            self.rect.y += 3
-            self.rect.x += 3
+            self.rect.y += self.seed
+            self.rect.x += self.seed
         else:
-            self.rect.x -= 3
+            self.rect.x -= self.seed
+            self.rect.y += self.seed
         if self.rect.x >= 429:
             self.flag = 'left'
         elif self.rect.x <= 0: self.flag = 'right'
@@ -179,9 +188,9 @@ class Boss(EnemyPlane):
                 self.num = 0
             if self.img_index > 3:
                 #self.hp = 100
-                self.img_index = 0
+                self.img_index = 1
                 self.su_hit = True
-                clock.tick(60)  # 让游戏时钟，１/６０秒运行一次
+                clock.tick(50)  # 让游戏时钟，１/６０秒运行一次
         else:
             self.screen.blit(self.player,self.rect)  #设置飞机　显示
             for i in self.bullet_list:
@@ -245,7 +254,7 @@ class EnemyPlane1(EnemyPlane):
 
 
 ENEMY_SHOWLL = pygame.USEREVENT
-pygame.time.set_timer(ENEMY_SHOWLL,1500)
+pygame.time.set_timer(ENEMY_SHOWLL,2500)
 def key_control(hero,plant,screen):
     '''游戏事件的监听'''
     move_step = 20  #移动的步长值
@@ -259,6 +268,7 @@ def key_control(hero,plant,screen):
         if keys_pressed[pygame.K_SPACE]:
             hero.fire()
             boom_sound = pygame.mixer.Sound("./images/brickErase.wav")
+            boom_sound.set_volume(0.1)
             boom_sound.play()
         if keys_pressed[pygame.K_b]:
             hero.supply()
@@ -319,19 +329,16 @@ def key_control(hero,plant,screen):
             hero.rect.x += move_step
 #定义敌机工厂
 class enemyplant(object):
-    __flag = 0
     def __init__(self,screen):
         self.screen = screen
         self.swith = False
         self.enemy_group = [EnemyPlane(screen,'./images/enemy-1.gif',random.randint(0,500),random.randint(1,20),51,39)]
-        #if enemyplant.__flag == 0:
         self.bos = Boss(screen,'./images/enemy1.png',206,2,69,89)
-        #enemyplant.__flag = 1
     def enemy(self):
-        self.enemy_group.append(EnemyPlane(self.screen,'./images/enemy-1.gif',random.randint(250,500),random.randint(1,20),51,39))  #创建敌机对象
+        self.enemy_group.append(EnemyPlane(self.screen,'./images/enemy-1.gif',random.randint(250,500),random.randint(-20,20),51,39))  #创建敌机对象
         #self.enemy_group.append(EnemyPlane(self.screen,'./photo/image/enemy3.png',random.randint(0,450),random.randint(1,20),51,39))  #创建敌机对象
     def creat(self):
-        self.enemy_group.append(EnemyPlane(self.screen,'./photo/image/enemy3.png',random.randint(0,250),random.randint(1,20),51,39))  #创建敌机对象
+        self.enemy_group.append(EnemyPlane(self.screen,'./photo/image/enemy3.png',random.randint(0,250),random.randint(-10,20),51,39))  #创建敌机对象
     def bian(self,hero,screen):
         if hero.score >= 1500:  # 敌机boss出厂
             self.bos.display()
@@ -351,16 +358,19 @@ def main():
     title=pygame.display.set_caption('飞机大战')  # 设置窗口标题
     background = pygame.image.load('./photo/image/img_bg_level_1.jpg')  #加载背景图片
     hero = HeroPlane(screen,'./images/hero1.png',412,644,80,100)  #创建英雄机
-    font = pygame.font.SysFont('arial',20)  #设置得分显示
+    font = pygame.font.SysFont('arial',25)  #设置得分显示
     plant = enemyplant(screen) #敌机工厂
     pygame.mixer.music.load("./images/music.ogg")
     pygame.mixer.music.play(-1)
     #pygame.time.delay(1000)
+    #trans_image = pygame.transform.scale(background,(512//2,768//2))
     while True:
-        show_score = font.render('score: %s  HP: %s  enemyHP: %s'%(str(hero.score),str(hero.hp),str(plant.bos.hp)),True,(250,250,0))
+        show_score = font.render('score: %s  HP: %s  bossHP: %s'%(str(hero.score),str(hero.hp),str(plant.bos.hp)),True,(250,250,0))
         screen.blit(background,(0,0))  #把背景图片传输　到游戏　窗口　上
         screen.blit(show_score,(0,0))
         plant.bian(hero,screen)
+        if random.randint(1,500) == 50:
+            hero.supply1()
         #调用监听函数
         key_control(hero,plant,screen)
         #调用飞机显示方法
